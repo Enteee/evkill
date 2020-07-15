@@ -1,0 +1,29 @@
+name: "Cross Compile"
+on:
+  pull_request:
+  push:
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        crossTarget: [
+          "x86_64-unknown-linux-musl",
+          "armv7l-unknown-linux-musleabi",
+          "armv6l-unknown-linux-musleabi"
+        ]
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: cachix/install-nix-action@v10
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+
+    - run: nix-build --arg crossTarget '"${{ matrix.crossTarget }}"'
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: evkill-${{ matrix.crossTarget }}
+        path: result/bin/evkill

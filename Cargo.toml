@@ -1,0 +1,9 @@
+[package]
+name = "evkill"
+version = "1.0.0"
+authors = ["Ente <ducksource@duckpond.ch>"]
+edition = "2018"
+
+[dependencies]
+nix = "0.17.0"
+ctrlc = "3.1.5"
